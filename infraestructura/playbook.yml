@@ -9,8 +9,6 @@
       name: httpd
       state: present
 
-  
-    # Iniciar apache
   - name: asegura httpd corriendo
     service:
       name: httpd 
@@ -25,13 +23,10 @@
       name: firewalld 
       state: restarted
 
-
-
-
-    - name: Asegurar que selinux este deshabilitado  # Necesario para cambiar el puerto de apache
+  - name: Asegurar que selinux este deshabilitado  # Necesario para cambiar el puerto de apache
       selinux: state=permissive policy=targeted
 
-    - name: Asegurar que httpd exponga el puerto correcto
+  - name: Asegurar que httpd exponga el puerto correcto
       lineinfile:
         dest: "/etc/httpd/conf/httpd.conf"
         regexp: '^Listen 80$'
@@ -39,13 +34,13 @@
         state: 'present'
         backrefs: yes
 
- - name: reinicia apache
+  - name: reinicia apache
     service:
       name: httpd
       state: restarted
 
-- hosts: desplegar
-  become: yes
+  - hosts: desplegar
+    become: yes
 
   tasks:
     # Copiar los archivos
