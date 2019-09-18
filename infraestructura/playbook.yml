@@ -12,15 +12,6 @@
       service:
         name: httpd
         state: started
-    - name: abre puerto 80 para http
-      firewalld:
-        service: http
-        permanent: true
-        state: enabled
-    - name: restartea el firewall
-      service:
-        name: firewalld
-        state: restarted
     - name: Asegurar que selinux este deshabilitado # Necesario para cambiar el puerto de apache
       selinux: state=permissive policy=targeted
     - name: Asegurar que httpd exponga el puerto correcto
