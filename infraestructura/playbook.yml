@@ -2,45 +2,38 @@
   become: yes
 
   tasks:
-
     # Instalar apache
-  - name: Instalar apache
-    yum:
-      name: httpd
-      state: present
+    - name: Instalar apache
+      yum:
+        name: httpd
+        state: present
 
-  - name: asegura httpd corriendo
-    service:
-      name: httpd 
-      state: started
-  - name: abre puerto 80 para http
-    firewalld:
-      service: http
-      permanent: true
-      state: enabled
-  - name: restartea el firewall
-    service: 
-      name: firewalld 
-      state: restarted
-
-  - name: Asegurar que selinux este deshabilitado  # Necesario para cambiar el puerto de apache
+    - name: asegura httpd corriendo
+      service:
+        name: httpd
+        state: started
+    - name: abre puerto 80 para http
+      firewalld:
+        service: http
+        permanent: true
+        state: enabled
+    - name: restartea el firewall
+      service:
+        name: firewalld
+        state: restarted
+    - name: Asegurar que selinux este deshabilitado # Necesario para cambiar el puerto de apache
       selinux: state=permissive policy=targeted
-
-  - name: Asegurar que httpd exponga el puerto correcto
+    - name: Asegurar que httpd exponga el puerto correcto
       lineinfile:
         dest: "/etc/httpd/conf/httpd.conf"
-        regexp: '^Listen 80$'
-        line: 'Listen {{apache_puerto}}'
-        state: 'present'
+        regexp: "^Listen 80$"
+        line: "Listen {{apache_puerto}}"
+        state: "present"
         backrefs: yes
-
-  - name: reinicia apache
-    service:
-      name: httpd
-      state: restarted
-
-  - hosts: desplegar
-    become: yes
-
-  tasks:
-    # Copiar los archivos
+    - name: reinicia apache
+      service:
+        name: httpd
+        state: restarted
+    - hosts: desplegar
+      become: yes
+      # Copiar los archivos
