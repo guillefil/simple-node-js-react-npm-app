@@ -36,4 +36,10 @@
         state: restarted
 - hosts: desplegar
   become: yes
+  tasks:
       # Copiar los archivos
+    - name: Ansible copy file to remote server 
+      copy: 
+        src: build
+        dest: "/var/www/html/"
+
